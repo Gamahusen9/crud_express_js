@@ -30,8 +30,19 @@ const getAuthors = (req, res) => {
 };
 
 const getAuthor = (req, res) => {
-    const id = req.params.id;
-    const query = `SELECT * FROM author WHERE id = '${id}'`;
+    const keyword = req.params.kata_kunci;
+    const query = 
+    `
+    SELECT * FROM author
+    WHERE 
+        id LIKE '%${keyword}%' OR
+        nama LIKE '%${keyword}%' OR
+        email LIKE '%${keyword}%' OR
+        alamat LIKE '%${keyword}%' OR
+        umur LIKE '%${keyword}%' OR
+        medsos LIKE '%${keyword}%'
+`;
+
 
     pool.getConnection((err, connection) => {
         if (err) throw err

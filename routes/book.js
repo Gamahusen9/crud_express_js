@@ -5,7 +5,9 @@ const {
     getBook,
     addBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    search,
+    sortBy
     // addBook
 } = require('../controllers/BookController')
 // route untuk menampilkan data
@@ -15,7 +17,9 @@ router.get('/', getBooks);
 router.post('/', addBook);
 
 
-router.get('/:id', getBook);
+router.get('/search', search);
+
+router.get('/sortBy', sortBy);
 
 router.put('/:id', updateBook);
 

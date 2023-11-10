@@ -5,8 +5,56 @@ const {
     responseNotFound,
     responseSuccess
 } = require('../traits/ApiResponse');
+const { connect } = require('../routes/book');
 // const { response } = require('express');
 
+
+const search = (req,res) => {
+    const keyword = req.query.keyword
+    
+    const query = `SELECT * FROM book WHERE nama LIKE '%${keyword}%'`
+
+    pool.getConnection((err, connection) => {
+        if(err) throw err
+
+        connection.query(query, (err, results) => {
+            if(err) throw err 
+
+            if(results.length == 0) {
+                return res.json({
+                    message: 'tidak ditemukan'
+                })
+            }
+
+            responseSuccess(res,results, 'BOOK SUCCESSFULLY FETCHED')
+        })
+
+        connection.release()
+    })
+}
+
+const sortBy = (req,res) => {
+    const orderBy = req.query.order
+
+    // DESCH ASC
+    const query = `SELECT * FROM book ORDER BY nama '${orderBy}'`
+
+
+    pool.getConnection((err,connection) => {
+        if(err) throw err
+
+        connection .query(query, (err,results) => {
+            if(err) throw err
+             if(results.length == 0) {
+            responseNotFound(res)
+            return
+        }
+
+        responseSuccess(res,results, 'BOOK SUCCESSFULLY FETCHED')
+        })
+       connection.release()
+    })
+}
 
 const getBooks = (req, res) => {
     const query = "SELECT * FROM book";
@@ -135,5 +183,7 @@ module.exports =
     getBook,
     addBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    search,
+    sortBy
 }

@@ -15,7 +15,7 @@ router.get('/', getAuthors);
 router.post('/', addAuthor);
 
 
-router.get('/:id', getAuthor);
+router.get('/:kata_kunci', getAuthor);
 
 router.put('/:id', updateAuthor);
 
